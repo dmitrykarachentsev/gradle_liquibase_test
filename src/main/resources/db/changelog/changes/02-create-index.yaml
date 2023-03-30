@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: Dmitry
+      changes:
+        - createIndex:
+            schemaName: "public"
+            tableName: "liquibase_test"
+            indexName: "liquibase_test_value_idx"
+            columns:
+              - column:
+                  name: "value"

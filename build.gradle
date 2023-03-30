@@ -1,0 +1,53 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.10'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'org.liquibase.gradle' version '2.1.1'
+}
+
+group = 'com.parsable.liquibase'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.liquibase:liquibase-core'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	liquibaseRuntime("org.liquibase:liquibase-core")
+	liquibaseRuntime("org.postgresql:postgresql")
+	liquibaseRuntime 'info.picocli:picocli:4.6.3'
+	liquibaseRuntime 'org.yaml:snakeyaml:1.30'
+}
+
+liquibase {
+	activities {
+		main {
+			changeLogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
+			url 'jdbc:postgresql://192.168.0.9:5432/sourcedb'
+			username 'postgres'
+			password 'postgres'
+			classpath "$rootDir/src/main/resources/"
+		}
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// command example:
+// ./gradlew rollbackToDateSql -PliquibaseCommandValue="2023-03-29 17:05:20"
+// ./gradlew rollbackToDate -PliquibaseCommandValue="2023-03-29 17:05:20"

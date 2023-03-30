@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Dmitry
+      changes:
+        - createTable:
+            schemaName: "public"
+            tableName: "liquibase_test"
+            columns:
+              - column:
+                  name: "id"
+                  type: "int"
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: "value"
+                  type: "varchar"
